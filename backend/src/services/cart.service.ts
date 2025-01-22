@@ -2,63 +2,65 @@ import mongoose from 'mongoose';
 import Cart, { ICart } from '../models/cart.model';
 import { IProduct } from '../models/product.model';
 
-export const createCart = async (userId: string): Promise<ICart> => {
-  const newCart = new Cart({
-    userId,
-    items: [],
-  });
+export class CartService {
+  async createCart(userId: string): Promise<ICart> {
+    const newCart = new Cart({
+      userId,
+      items: [],
+    });
 
-  await newCart.save();
-  return newCart;
-};
-
-export const getCartByUserId = async (userId: string): Promise<ICart | null> => {
-  return Cart.findOne({ userId }).populate('items.productId');
-};
-
-export const addToCart = async (userId: string, productId: string, quantity: number): Promise<ICart | null> => {
-  const cart = await Cart.findOne({ userId });
-
-  if (!cart) throw new Error('Cart not found');
-
-  const objectIdProduct = new mongoose.Types.ObjectId(productId);
-
-  const itemIndex = cart.items.findIndex((item) => item.productId.toString() === objectIdProduct.toString());
-
-  if (itemIndex >= 0) {
-    cart.items[itemIndex].quantity += quantity;
-  } else {
-    cart.items.push({ productId: objectIdProduct, quantity });
+    await newCart.save();
+    return newCart;
   }
 
-  await cart.save();
-  return cart;
-};
+  async getCartByUserId(userId: string): Promise<ICart | null> {
+    return Cart.findOne({ userId }).populate('items.productId');
+  }
 
-export const removeFromCart = async (userId: string, productId: string): Promise<ICart | null> => {
-  const cart = await Cart.findOne({ userId });
+  async addToCart(userId: string, productId: string, quantity: number): Promise<ICart | null> {
+    const cart = await Cart.findOne({ userId });
 
-  if (!cart) throw new Error('Cart not found');
+    if (!cart) throw new Error('Cart not found');
 
-  const itemIndex = cart.items.findIndex((item) => item.productId.toString() === productId);
-  if (itemIndex < 0) throw new Error('Item not found in cart');
+    const objectIdProduct = new mongoose.Types.ObjectId(productId);
 
-  cart.items.splice(itemIndex, 1);
+    const itemIndex = cart.items.findIndex((item) => item.productId.toString() === objectIdProduct.toString());
 
-  await cart.save();
-  return cart;
-};
+    if (itemIndex >= 0) {
+      cart.items[itemIndex].quantity += quantity;
+    } else {
+      cart.items.push({ productId: objectIdProduct, quantity });
+    }
 
-export const updateCartItemQuantity = async (userId: string, productId: string, quantity: number): Promise<ICart | null> => {
-  const cart = await Cart.findOne({ userId });
+    await cart.save();
+    return cart;
+  };
 
-  if (!cart) throw new Error('Cart not found');
+  async removeFromCart(userId: string, productId: string): Promise<ICart | null> {
+    const cart = await Cart.findOne({ userId });
 
-  const itemIndex = cart.items.findIndex((item) => item.productId.toString() === productId);
-  if (itemIndex < 0) throw new Error('Item not found in cart');
+    if (!cart) throw new Error('Cart not found');
 
-  cart.items[itemIndex].quantity = quantity;
+    const itemIndex = cart.items.findIndex((item) => item.productId.toString() === productId);
+    if (itemIndex < 0) throw new Error('Item not found in cart');
 
-  await cart.save();
-  return cart;
-};
+    cart.items.splice(itemIndex, 1);
+
+    await cart.save();
+    return cart;
+  };
+
+  async updateCartItemQuantity(userId: string, productId: string, quantity: number): Promise<ICart | null> {
+    const cart = await Cart.findOne({ userId });
+
+    if (!cart) throw new Error('Cart not found');
+
+    const itemIndex = cart.items.findIndex((item) => item.productId.toString() === productId);
+    if (itemIndex < 0) throw new Error('Item not found in cart');
+
+    cart.items[itemIndex].quantity = quantity;
+
+    await cart.save();
+    return cart;
+  };
+}
