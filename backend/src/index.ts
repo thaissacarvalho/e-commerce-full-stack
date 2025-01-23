@@ -1,22 +1,21 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { connectDB } from './config/mongoose'; 
-import redisClient from './config/redis';      
+import connectToDatabase from './config/mongoose';
+import { client } from './config/redis.config';
 // import productRoutes from './routes/productRoutes'; 
 // import cartRoutes from './routes/cartRoutes';        
 
 dotenv.config();
+connectToDatabase();
 
 const app = express();
 
-app.use(cors());             
-app.use(express.json());    
-app.use(express.urlencoded({ extended: true })); 
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-connectDB();
-
-redisClient.on('connect', () => {
+client.on('connect', () => {
   console.log('Redis connected');
 });
 
