@@ -17,7 +17,7 @@ export class AuthController {
     }
 
     try {
-      const token = await this.authService.loginUser(email, password);
+      const token = await this.authService.login(email, password);
       res.status(200).json({ token });
       return;
     } catch (error) {
