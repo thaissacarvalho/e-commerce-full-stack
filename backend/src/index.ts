@@ -2,12 +2,16 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectToDatabase from './config/mongoose';
-import { client } from './config/redis.config';
-// import productRoutes from './routes/productRoutes'; 
-// import cartRoutes from './routes/cartRoutes';        
+import { client } from './config/redis.config';     
+import router from './routes/routes';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+import { swaggerOptions } from './config/swagger';
 
 dotenv.config();
 connectToDatabase();
+
+const swaggerDocs = swaggerJSDoc(swaggerOptions);
 
 const app = express();
 
@@ -19,12 +23,8 @@ client.on('connect', () => {
   console.log('Redis connected');
 });
 
-// app.use('/api', productRoutes);  
-// app.use('/api', cartRoutes);     
-
-app.get('/', (req: Request, res: Response) => {
-  res.send('E-commerce API is running');
-});
+app.use('/api', router);    
+app.use('/api/v1/ecommerce/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
