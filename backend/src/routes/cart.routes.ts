@@ -9,6 +9,6 @@ router.get('/:userId', cartController.getCartByUserId);
 router.post('/add-item', cartController.addItemToCart);
 router.post('/create-cart', cartController.createCart);
 router.patch('/edit-cart-item', cartController.updateCartItem);
-router.delete('/delete-item', cartController.removeFromCart);
+router.delete('/clear-cart/:userId', cartController.removeFromCart);
 
 export default router;
