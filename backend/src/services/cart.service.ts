@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Cart, { ICart } from '../models/cart.model';
-import { IProduct } from '../models/product.model';
+import { client } from '../config/redis.config';  // Redis Client
 
 export class CartService {
   async createCart(userId: string): Promise<ICart> {
@@ -10,11 +10,25 @@ export class CartService {
     });
 
     await newCart.save();
+
+    await client.set(`cart:${userId}`, JSON.stringify(newCart));
+
     return newCart;
   }
 
   async getCartByUserId(userId: string): Promise<ICart | null> {
-    return Cart.findOne({ userId }).populate('items.productId');
+    const cachedCart = await client.get(`cart:${userId}`);
+    if (cachedCart) {
+      return JSON.parse(cachedCart);
+    }
+
+    const cart = await Cart.findOne({ userId }).populate('items.productId');
+
+    if (cart) {
+      await client.set(`cart:${userId}`, JSON.stringify(cart));
+    }
+
+    return cart;
   }
 
   async addToCart(userId: string, productId: string, quantity: number): Promise<ICart | null> {
@@ -33,8 +47,11 @@ export class CartService {
     }
 
     await cart.save();
+
+    await client.set(`cart:${userId}`, JSON.stringify(cart));
+
     return cart;
-  };
+  }
 
   async removeFromCart(userId: string, productId: string): Promise<ICart | null> {
     const cart = await Cart.findOne({ userId });
@@ -47,8 +64,11 @@ export class CartService {
     cart.items.splice(itemIndex, 1);
 
     await cart.save();
+
+    await client.set(`cart:${userId}`, JSON.stringify(cart));
+
     return cart;
-  };
+  }
 
   async updateCartItemQuantity(userId: string, productId: string, quantity: number): Promise<ICart | null> {
     const cart = await Cart.findOne({ userId });
@@ -61,6 +81,9 @@ export class CartService {
     cart.items[itemIndex].quantity = quantity;
 
     await cart.save();
+
+    await client.set(`cart:${userId}`, JSON.stringify(cart));
+
     return cart;
-  };
+  }
 }
