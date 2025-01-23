@@ -95,6 +95,7 @@ export class CartController {
       return;
     }
   }
+  
   async updateCartItem(req: Request, res: Response): Promise<void> {
     try {
       const { userId, productId } = req.params;
