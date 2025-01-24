@@ -6,14 +6,14 @@ import { client } from './config/redis.config';
 import router from './routes/routes';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
-import { swaggerOptions } from './config/swagger';
+import { swaggerOptions } from './config/swagger.config';
 
 dotenv.config();
 connectToDatabase();
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
 
-const app = express();
+export const app = express();
 
 app.use(cors());
 app.use(express.json());
