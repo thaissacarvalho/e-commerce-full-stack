@@ -60,40 +60,38 @@ export class UserController {
     try {
       const { id } = req.params;
       const updates = req.body;
-
+  
       if (!updates || Object.keys(updates).length === 0) {
         res.status(400).json({ message: 'No fields provided for update' });
         return;
       }
-
-      const userExists = await User.findOne(updates.email);
-      if (userExists) throw new Error('Email already exists');
-
+  
+      const userExists = await User.findOne({ email: updates.email }); 
+      if (userExists) {
+        res.status(409).json('Email already exists');
+        return;
+      }
+  
       const updateUser = await this.userService.updateUser(id, updates);
-
+  
       if (!updateUser) {
         res.status(404).json({ message: 'User not found' });
         return;
       }
-
+  
       res.status(200).json({
         message: 'User updated successfully',
         user: updateUser
       });
-      return;
     } catch (error) {
       if (error instanceof Error) {
-        if (error.message) {
-          res.status(401).json(error.message);
-          return; 
-        }
         res.status(500).json({ message: error.message });
-        return; 
+      } else {
+        res.status(500).json({ message: 'Internal server error' });
       }
-      res.status(500).json({ message: 'Internal server error' });
-      return;
     }
   }
+  
 
   async deleteUser(req: Request, res: Response): Promise<void> {
     try {
