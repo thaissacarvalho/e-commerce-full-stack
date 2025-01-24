@@ -16,3 +16,7 @@ export const client = createClient({
 client.on('error', err => console.log('Redis Client Error', err));
 
 client.connect();
+
+afterAll(async () => {
+    await client.disconnect(); // Garante que a conexão seja encerrada
+  });
