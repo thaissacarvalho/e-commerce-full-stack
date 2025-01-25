@@ -1,6 +1,6 @@
 # Arquitetura Back End
 
-ecommerce-backend/
+ecommerce/backend/
 ├── src/
 │   ├── config/             # Arquivos de configuração, como DB, Redis, etc.
 │   ├── controllers/        # Controladores para lidar com as rotas
@@ -11,6 +11,8 @@ ecommerce-backend/
 │   ├── tests/              # Testes unitários, integração ou end-to-end
 │   └── index.ts            # Arquivo principal de configuração do app (Express)
 ├── .env                    # Variáveis de ambiente
+├── .dockerignore           # 
+├── .gitignore              # 
 ├── Dockerfile              # Arquivo para build do Docker
 ├── docker-compose.yml      # Configuração do Docker Compose
 ├── package.json            # Dependências e scripts

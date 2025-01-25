@@ -4,7 +4,7 @@ import { CartController } from '../controllers/cart.controller';
 const router = Router();
 const cartController = new CartController();
 
-router.get('/carts', cartController.getCart)
+router.get('/', cartController.getCart)
 router.get('/:userId', cartController.getCartByUserId);
 router.post('/add-item', cartController.addItemToCart);
 router.post('/create-cart', cartController.createCart);
