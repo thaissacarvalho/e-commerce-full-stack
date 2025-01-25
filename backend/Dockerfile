@@ -19,7 +19,7 @@ COPY .env .env
 RUN npm run build
 
 # Exponha a porta que o Express utiliza
-EXPOSE 3000
+EXPOSE 5000
 
 # Define o comando para iniciar a aplicação
 CMD ["npm", "run", "start"]

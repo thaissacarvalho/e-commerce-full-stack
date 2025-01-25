@@ -7,30 +7,35 @@ services:
       dockerfile: Dockerfile
     container_name: ecommerce-backend
     ports:
-      - '3000:5000' # Porta do contêiner mapeada para 5000 (do .env)
+      - '5000:5000' # Porta do backend exposta
     env_file: 
-      - .env  # Carrega as variáveis do arquivo .env
+      - .env # Variáveis de ambiente
     volumes:
-      - .:/app
-      - /app/node_modules
+      - .:/app # Sincronização dos arquivos do projeto
+      - /app/node_modules # Isolamento das dependências
     depends_on:
       - mongo
       - redis
-    command: npm run dev
+    command: npm run dev # Script para ambiente de desenvolvimento
 
   mongo:
-    image: mongo:8.0
+    image: mongo:6.0 # Versão estável do MongoDB
     container_name: mongo
+    restart: always
     ports:
-      - '27017:27017'
+      - '27017:27017' # Porta padrão do MongoDB
     volumes:
-      - mongo-data:/data/db
+      - mongo-data:/data/db # Persistência de dados
 
   redis:
-    image: redis:7.4
+    image: redis:8.0-M03-alpine3.21⁠ # Versão estável do Redis
     container_name: redis
+    restart: always
     ports:
-      - '6379:6379'
+      - '6379:6379' # Porta padrão do Redis
+    volumes:
+      - redis-data:/data # Persistência de cache (opcional)
 
 volumes:
-  mongo-data:
+  mongo-data: # Volume para o MongoDB
+  redis-data: # Volume para o Redis
