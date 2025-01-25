@@ -1,23 +1,25 @@
-# Usando a imagem oficial do Node.js
-FROM node:16-alpine
+# Use a imagem base oficial do Node.js
+FROM node:23-alpine
 
-# Diretório de trabalho
+# Define o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
-# Copiar os arquivos de dependências
-COPY package.json package-lock.json ./
+# Copia apenas os arquivos necessários para instalar dependências
+COPY package.json package-lock.json tsconfig.json ./
 
-# Instalar dependências
+# Instala as dependências
 RUN npm install
 
-# Copiar os arquivos do projeto
-COPY . .
+# Copia todos os arquivos do projeto para o contêiner
+COPY ./src ./src
+COPY ./tests ./tests
+COPY .env .env
 
-# Compilar o TypeScript
+# Compila o código TypeScript para JavaScript
 RUN npm run build
 
-# Expor a porta
-EXPOSE 5000
+# Exponha a porta que o Express utiliza
+EXPOSE 3000
 
-# Iniciar o servidor
-CMD ["npm", "start"]
+# Define o comando para iniciar a aplicação
+CMD ["npm", "run", "start"]
