@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import connectToDatabase from './config/mongoose';
+import connectToDatabase from './config/mongoose.config';
 import { client } from './config/redis.config';     
 import router from './routes/routes';
 import swaggerUi from 'swagger-ui-express';

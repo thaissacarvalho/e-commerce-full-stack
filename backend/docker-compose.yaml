@@ -19,7 +19,7 @@ services:
     command: npm run dev # Script para ambiente de desenvolvimento
 
   mongo:
-    image: mongo:6.0 # Versão estável do MongoDB
+    image: mongo:latest # Versão estável do MongoDB
     container_name: mongo
     restart: always
     ports:
@@ -28,11 +28,11 @@ services:
       - mongo-data:/data/db # Persistência de dados
 
   redis:
-    image: redis:8.0-M03-alpine3.21⁠ # Versão estável do Redis
+    image: redis:latest⁠ # Versão estável do Redis
     container_name: redis
     restart: always
     ports:
-      - '6379:6379' # Porta padrão do Redis
+      - '10021:6379' # Porta padrão do Redis
     volumes:
       - redis-data:/data # Persistência de cache (opcional)
 

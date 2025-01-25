@@ -1,0 +1,10 @@
+# Ignorar diretórios e arquivos específicos
+node_modules/
+*.log
+*.md
+
+# Ignorar arquivos de configuração específicos
+config/secrets.json
+
+# Ignorar arquivos temporários
+*.tmp

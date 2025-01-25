@@ -1,5 +1,5 @@
 # Use a imagem base oficial do Node.js
-FROM node:23-alpine
+FROM node:latest
 
 # Define o diretório de trabalho dentro do contêiner
 WORKDIR /app
@@ -12,7 +12,6 @@ RUN npm install
 
 # Copia todos os arquivos do projeto para o contêiner
 COPY ./src ./src
-COPY ./tests ./tests
 COPY .env .env
 
 # Compila o código TypeScript para JavaScript
