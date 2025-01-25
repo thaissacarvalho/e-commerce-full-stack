@@ -69,10 +69,12 @@ export class ProductService {
     return updatedProduct;
   }
 
-  async deleteProduct(productId: string): Promise<void> {
-    await Product.findByIdAndDelete(productId);
+  async deleteProduct(productId: string): Promise<boolean> {
+    const result = await Product.findByIdAndDelete(productId);
 
     const products = await Product.find();
     await client.set('products', JSON.stringify(products), { EX: 60 });
+
+    return result !== null;
   }
 }

@@ -18,14 +18,11 @@ export class ProductController {
       return;
     } catch (error) {
       if (error instanceof Error) {
-        if (error.message) {
-          return;
-        }
         res.status(500).json({ message: error.message });
         return;
       }
       res.status(500).json({ message: 'Internal server error' });
-      return;
+      return;      
     }
   };
 
@@ -36,14 +33,10 @@ export class ProductController {
       return;
     } catch (error) {
       if (error instanceof Error) {
-        if (error.message) {
-          return;
-        }
         res.status(500).json({ message: error.message });
-        return;
+      } else {
+        res.status(500).json({ message: 'Internal server error' });
       }
-      res.status(500).json({ message: 'Internal server error' });
-      return;
     }
   }
 
@@ -60,14 +53,10 @@ export class ProductController {
       res.status(200).json(productId);
     } catch (error) {
       if (error instanceof Error) {
-        if (error.message) {
-          return;
-        }
         res.status(500).json({ message: error.message });
-        return;
+      } else {
+        res.status(500).json({ message: 'Internal server error' });
       }
-      res.status(500).json({ message: 'Internal server error' });
-      return;
     }
   }
 
@@ -95,15 +84,10 @@ export class ProductController {
       return;
     } catch (error) {
       if (error instanceof Error) {
-        if (error.message) {
-          res.status(401).json(error.message);
-          return; 
-        }
         res.status(500).json({ message: error.message });
-        return; 
+      } else {
+        res.status(500).json({ message: 'Internal server error' });
       }
-      res.status(500).json({ message: 'Internal server error' });
-      return;
     }
   }
 
@@ -120,12 +104,10 @@ export class ProductController {
       res.status(200).json({ message: 'Product deleted successfully' });
     } catch (error) {
       if (error instanceof Error) {
-        if (error.message) {
-          res.status(401).json(error.message);
-        }
         res.status(500).json({ message: error.message });
-      }
-      res.status(500).json({ message: 'Internal server error' });
+      } else {
+        res.status(500).json({ message: 'Internal server error' });
+      } 
     }
   }
 };
