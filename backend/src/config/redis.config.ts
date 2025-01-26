@@ -4,14 +4,14 @@ import { app } from '..';
 const redis_user = process.env.REDIS_USER;
 const redis_password = process.env.REDIS_PASSWORD;
 const redis_host = process.env.REDIS_HOST;
-const PORT = process.env.PORT;
+const PORT = 10021;
 
-const client = createClient({
+export const client = createClient({
     username: redis_user,
     password: redis_password,
     socket: {
         host: redis_host,
-        port: 10021
+        port: PORT
     }
 });
 
@@ -23,11 +23,14 @@ export const startServer = async () => {
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
         });
+        
+        process.on('SIGINT', async () => {
+            await client.disconnect();
+            console.log('Redis disconnected');
+            process.exit();
+        });
+        
     } catch (err) {
         console.log('Error connecting to Redis:', err);
     }
 };
-
-afterAll(async () => {
-    await client.disconnect();
-});
