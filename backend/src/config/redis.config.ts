@@ -4,7 +4,7 @@ import { app } from '..';
 const redis_user = process.env.REDIS_USER;
 const redis_password = process.env.REDIS_PASSWORD;
 const redis_host = process.env.REDIS_HOST;
-const PORT = 19209;
+const PORT = 12919;
 
 export const client = createClient({
     username: redis_user,
