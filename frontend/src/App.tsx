@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/header/Header';
 import Products from './components/product/Product';
 import Login from './pages/Login';
-import ProductDetail from './pages/ProductDetails';
+import ProductDetail from './pages/ProductDetail';
 
 const App: React.FC = () => {
   return (

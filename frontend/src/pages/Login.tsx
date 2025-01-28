@@ -4,26 +4,20 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const navigate = useNavigate();
 
-  // States para armazenar os dados do formulário
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [isSignUp, setIsSignUp] = useState(false); // Para alternar entre Login e Cadastro
+  const [isSignUp, setIsSignUp] = useState(false); 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Lógica para cadastro ou login
     if (isSignUp) {
-      // Ação de cadastro
-      // Aqui você pode chamar sua API de cadastro
       console.log('Cadastrar:', { name, email, password });
-      navigate('/'); // Redireciona para a home após cadastro
+      navigate('/'); 
     } else {
-      // Ação de login
-      // Aqui você pode chamar sua API de login
       console.log('Login:', { email, password });
-      navigate('/'); // Redireciona para a home após login
+      navigate('/'); 
     }
   };
 

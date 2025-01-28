@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { CartContext } from '../../context/Cart';
 import CartActions from './CartActions';
-import { FiX } from 'react-icons/fi'; // Importando o ícone de 'X' do react-icons
+import { FiX } from 'react-icons/fi'; 
 
 const Cart = ({ closeCart }: { closeCart: () => void }) => {
   const { cartItems, removeFromCart } = useContext(CartContext);
@@ -13,7 +13,10 @@ const Cart = ({ closeCart }: { closeCart: () => void }) => {
   }, 0);
 
   return (
-    <div className="fixed top-0 right-0 bg-white shadow-lg rounded-lg p-6 w-1/3 h-full max-w-md overflow-y-auto border-l-2 border-gray-200">
+    <div
+      className="fixed top-0 right-0 bg-white shadow-lg rounded-lg p-6 w-1/3 h-full max-w-md overflow-y-auto border-l-2 border-gray-200"
+      style={{ zIndex: 9999 }} 
+    >
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-2xl font-semibold text-gray-800">Carrinho de Compras</h3>
         <button
