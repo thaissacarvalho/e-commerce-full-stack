@@ -31,16 +31,14 @@ export class ProductService {
     try {
       const cachedProducts = await client.get('products');
 
-      if (cachedProducts !== null) {
-        console.log('Dados encontrados no Redis Cache.');
+      if (cachedProducts) {
         return JSON.parse(cachedProducts);
       }
 
-      console.log('Buscando dados no MongoDB...');
+      console.log('Cache não encontrado, buscando no MongoDB...');
       const products = await Product.find();
 
-      // Armazenar no cache do Redis
-      await client.set('products', JSON.stringify(products), { EX: 60 });
+      await client.set('products', JSON.stringify(products), { EX: 60 });  // 60 segundos
 
       return products;
     } catch (error) {
@@ -50,7 +48,19 @@ export class ProductService {
   }
 
   async getProductById(productId: string): Promise<IProduct | null> {
-    return Product.findById(productId);
+    const cachedProduct = await client.get(`product:${productId}`);
+
+    if (cachedProduct) {
+      return JSON.parse(cachedProduct);
+    }
+
+    const product = await Product.findById(productId);
+
+    if (product) {
+      await client.set(`product:${productId}`, JSON.stringify(product), { EX: 60 });
+    }
+
+    return product;
   }
 
   async updateProduct(
@@ -64,6 +74,8 @@ export class ProductService {
     if (updatedProduct) {
       const products = await Product.find();
       await client.set('products', JSON.stringify(products), { EX: 60 });
+
+      await client.set(`product:${productId}`, JSON.stringify(updatedProduct), { EX: 60 });
     }
 
     return updatedProduct;
@@ -72,8 +84,11 @@ export class ProductService {
   async deleteProduct(productId: string): Promise<boolean> {
     const result = await Product.findByIdAndDelete(productId);
 
-    const products = await Product.find();
-    await client.set('products', JSON.stringify(products), { EX: 60 });
+    if (result) {
+      await client.del('products');
+
+      await client.del(`product:${productId}`);
+    }
 
     return result !== null;
   }

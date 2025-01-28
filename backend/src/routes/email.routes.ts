@@ -1,8 +1,9 @@
 import express from 'express';
-import emailController from '../controllers/email.controller';
+import { EmailController } from '../controllers/email.controller';
 
 const router = express.Router();
+const emailController = new EmailController();
 
-router.post('/send-abandoned-cart-email', emailController.sendAbandonedCartEmail);
+router.post('/send-abandoned-cart-email', emailController.sendAbandonedCartEmail.bind(emailController));
 
 export default router;

@@ -10,7 +10,7 @@ const router = Router();
 router.use('/users', userRoutes);
 router.use('/products', productRoutes);
 router.use('/cart', cartRoutes);
-router.use('', authRoutes);
-router.use('emails', emailRoutes)
+router.use('/login', authRoutes);
+router.use('/emails', emailRoutes)
 
 export default router;

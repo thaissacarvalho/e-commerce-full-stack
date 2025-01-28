@@ -99,7 +99,10 @@ A documentação interativa da API está disponível via Swagger, acessível atr
     │   ├── models/             # Modelos do Mongoose
     │   ├── routes/             # Definição das rotas (endpoints)
     │   ├── services/           # Lógica de negócio e interações entre camadas
-    │   ├── middlewares/        # Middlewares, como autenticação, validações, etc.
+    │   ├── seeds/              # Scripts para popular o banco com dados iniciais
+    │   │   ├── seedProducts.ts # Dados iniciais de produtos
+    │   │   ├── seedUsers.ts    # Dados iniciais de usuários
+    │   │   └── index.ts        # Script principal para rodar todos os seeds
     │   ├── tests/              # Testes unitários, integração ou end-to-end
     │   └── index.ts            # Arquivo principal de configuração do app (Express)
     ├── .env                    # Variáveis de ambiente

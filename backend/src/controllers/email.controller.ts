@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { EmailService } from '../services/email.service';
 
-class EmailController {
+export class EmailController {
 
    private emailService: EmailService; 
   
@@ -23,5 +23,3 @@ class EmailController {
     }
   }
 }
-
-export default new EmailController();
