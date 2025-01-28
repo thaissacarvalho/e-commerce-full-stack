@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Product from '../models/product.model';
 import { ProductService } from '../services/product.service';
+import mongoose from 'mongoose';
 
 export class ProductController {
   private productService: ProductService; 
@@ -43,19 +44,30 @@ export class ProductController {
   async getProductById(req: Request, res: Response) {
     try {
       const { id } = req.params;
+  
       if (!id) {
-        res.status(400).json({ message: 'ID is required' })
+        res.status(400).json({ message: "ID is required" });
         return;
       }
-
-      const productId = await this.productService.getProductById(id);
-
-      res.status(200).json(productId);
+  
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        res.status(400).json({ message: "Invalid ID format" });
+        return;
+      }
+  
+      const product = await this.productService.getProductById(id);
+  
+      if (!product) {
+        res.status(404).json({ message: "Product not found" });
+        return;
+      }
+  
+      res.status(200).json(product);
     } catch (error) {
       if (error instanceof Error) {
         res.status(500).json({ message: error.message });
       } else {
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: "Internal server error" });
       }
     }
   }

@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { client } from '../config/redis.config';
 import Product, { IProduct } from '../models/product.model';
 
@@ -48,6 +49,10 @@ export class ProductService {
   }
 
   async getProductById(productId: string): Promise<IProduct | null> {
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      throw new Error("Invalid ID format");
+    }
+
     const cachedProduct = await client.get(`product:${productId}`);
 
     if (cachedProduct) {
