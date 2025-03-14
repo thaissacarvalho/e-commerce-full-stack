@@ -48,8 +48,8 @@ src/
 Clone este repositório para a sua máquina local:
 
 ```bash
-git clone https://github.com/seu-usuario/e-commerce-frontend.git
-cd e-commerce-frontend
+git clone https://github.com/thaissacarvalho/e-commerce-full-stack.git
+cd frontend
 ```
 
 ##### 2. Instalar dependências

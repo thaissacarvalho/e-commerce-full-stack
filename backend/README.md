@@ -23,6 +23,7 @@ Este projeto é a parte de back-end de uma aplicação de e-commerce. Ele permit
 Comece dando um git clone na aplicação:
 
     https://github.com/thaissacarvalho/e-commerce-full-stack.git
+    cd backend
 
 #### Pré-requisitos
 
